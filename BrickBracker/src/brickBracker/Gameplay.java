@@ -2,20 +2,21 @@ package brickBracker;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Timer;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener{
 
 	private boolean play = false;
 	private int score = 0;
 	
-	private int totalBricks =21;
+	private int totalBricks = 21;
 	
 	private Timer timer;
 	private int delay = 8;
@@ -31,8 +32,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
-		//timer = newTimer(delay, this);
-		//timer.start();
+		timer = new Timer(delay, this);
+		timer.start();
 		
 	}
 	
@@ -53,7 +54,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		
 		//Ball
 		g.setColor(Color.yellow);
-		g.fillRect(ballPosX, ballPosY, 20, 20);
+		g.fillOval(ballPosX, ballPosY, 20, 20);
+		
+		g.dispose();
 		
 	}
 	
@@ -61,28 +64,72 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		timer.start();
+		if(play) {
+			if(new Rectangle(ballPosX, ballPosY, 20, 20).intersects(new Rectangle(playerX, 550, 100, 8))) {
+				ballYdir = -ballYdir;
+			}
+			
+			ballPosX += ballXdir;
+			ballPosY += ballYdir;
+			if(ballPosX < 0) {
+				ballXdir = -ballXdir;
+			}
+			if(ballPosY < 0) {
+				ballYdir = -ballYdir;
+			}
+			if(ballPosX > 670) {
+				ballXdir = -ballXdir;
+			}
+			
+			
+		}
 		
+		
+		
+		repaint();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			if(playerX >= 600) {
+				playerX = 600;
+			}else {
+				moveRight();
+			}
+		}
+		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+			if(playerX < 10) {
+				playerX = 10;
+			}else {
+				moveLeft();
+			}
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
+	private void moveLeft() {
+		play = true;
+		playerX -= 20;
+	}
+
+	private void moveRight() {
+		play = true;
+		playerX += 20;
+	}
+
+	
+	
 	
 	
 	
