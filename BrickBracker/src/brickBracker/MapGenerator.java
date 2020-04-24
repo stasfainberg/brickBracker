@@ -6,15 +6,15 @@ import java.awt.Graphics2D;
 
 public class MapGenerator {
 
-	public int[][] map;
+	public int[][] matrix;
 	public int brickWidth;
 	public int brickHeight;
 	
 	public MapGenerator(int row, int col) {
-		map = new int[row][col];
-		for(int i=0 ; i<map.length ; i++) {
-			for(int j=0 ; j<map[0].length ; j++) {
-				map[i][j] = 1;
+		matrix = new int[row][col];
+		for(int i=0 ; i<matrix.length ; i++) {
+			for(int j=0 ; j<matrix[0].length ; j++) {
+				matrix[i][j] = 1;
 				
 			}
 		}
@@ -26,9 +26,9 @@ public class MapGenerator {
 	
 	
 	public void draw(Graphics2D g) {
-		for(int i=0 ; i<map.length ; i++) {
-			for(int j=0 ; j<map[0].length ; j++) {
-				if(map[i][j] > 0) {
+		for(int i=0 ; i<matrix.length ; i++) {
+			for(int j=0 ; j<matrix[0].length ; j++) {
+				if(matrix[i][j] > 0) {
 					g.setColor(Color.white);
 					g.fillRect(j*brickWidth + 80, i*brickHeight + 50, brickWidth, brickHeight);
 					
@@ -41,6 +41,10 @@ public class MapGenerator {
 			}
 		}
 		
+	}
+	
+	public void setBrickValue(int value, int row, int col) {
+		matrix[row][col] = value;
 	}
 	
 	
